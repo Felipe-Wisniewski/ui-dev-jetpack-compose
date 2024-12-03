@@ -36,6 +36,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.preference.PreferenceManager
 import eu.thomaskuenneth.composebook.composeunitconverter.screens.ComposeUnitConverterScreen
 import eu.thomaskuenneth.composebook.composeunitconverter.screens.DistancesConverter
 import eu.thomaskuenneth.composebook.composeunitconverter.screens.TemperatureConverter
@@ -45,7 +46,10 @@ import kotlinx.coroutines.launch
 class ComposeUnitConverterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val factory = ViewModelFactory(Repository(applicationContext))
+
+        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val factory = ViewModelFactory(Repository(preferenceManager))
+
         setContent {
             ComposeUnitConverter(factory)
         }
@@ -58,6 +62,7 @@ fun ComposeUnitConverter(factory: ViewModelFactory) {
     val menuItems = listOf("Item #1", "Item #2")
     val snackbarCoroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+
     ComposeUnitConverterTheme {
         Scaffold(
             snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -85,6 +90,7 @@ fun ComposeUnitConverter(factory: ViewModelFactory) {
 @Composable
 fun ComposeUnitConverterTopBar(menuItems: List<String>, onClick: (String) -> Unit) {
     var menuOpened by remember { mutableStateOf(false) }
+
     TopAppBar(title = {
         Text(text = stringResource(id = R.string.app_name))
     },
@@ -121,6 +127,7 @@ fun ComposeUnitConverterBottomBar(navController: NavHostController) {
     BottomAppBar {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
+
         ComposeUnitConverterScreen.screens.forEach { screen ->
             NavigationBarItem(
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,

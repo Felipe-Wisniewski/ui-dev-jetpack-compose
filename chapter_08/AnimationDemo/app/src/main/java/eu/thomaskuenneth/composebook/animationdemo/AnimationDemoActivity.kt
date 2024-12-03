@@ -20,6 +20,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -104,10 +105,12 @@ fun StateChangeDemo() {
     var toggled by remember {
         mutableStateOf(false)
     }
+
     val color = if (toggled)
         Color.White
     else
         Color.Red
+
     Column(
         modifier = Modifier
             .padding(16.dp),
@@ -135,13 +138,13 @@ fun SingleValueAnimationDemo() {
     var toggled by remember {
         mutableStateOf(false)
     }
+
     val color by animateColorAsState(
-        targetValue = if (toggled)
-            Color.White
-        else
-            Color.Red,
-        animationSpec = spring(stiffness = Spring.StiffnessVeryLow)
+        targetValue = if (toggled) Color.White else Color.Red,
+        animationSpec = spring(stiffness = Spring.StiffnessVeryLow),
+        label = "Color Animation"
     )
+
     Column(
         modifier = Modifier
             .padding(16.dp),
@@ -169,26 +172,27 @@ fun MultipleValuesAnimationDemo() {
     var toggled by remember {
         mutableStateOf(false)
     }
+
     val transition = updateTransition(
         targetState = toggled,
         label = "toggledTransition"
     )
+
     val borderWidth by transition.animateDp(label = "borderWidthTransition") { state ->
-        if (state)
-            10.dp
-        else
-            1.dp
+        if (state) 10.dp
+        else 1.dp
     }
+
     val degrees by transition.animateFloat(label = "degreesTransition") { state ->
         if (state) -90F
-        else
-            0F
+        else 0F
     }
+
     Column(
-        modifier = Modifier
-            .padding(16.dp),
+        modifier = Modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Button(onClick = {
             toggled = !toggled
         }) {
@@ -196,6 +200,7 @@ fun MultipleValuesAnimationDemo() {
                 stringResource(R.string.toggle)
             )
         }
+
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
@@ -220,11 +225,13 @@ fun AnimatedVisibilityDemo() {
     var visible by remember {
         mutableStateOf(false)
     }
+
     Column(
         modifier = Modifier
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Button(onClick = {
             visible = !visible
         }) {
@@ -237,6 +244,7 @@ fun AnimatedVisibilityDemo() {
                 )
             )
         }
+
         AnimatedVisibility(
             visible = visible,
             enter = slideInHorizontally(),
@@ -256,10 +264,12 @@ fun AnimatedVisibilityDemo() {
 @Composable
 fun SizeChangeAnimationDemo() {
     var size by remember { mutableStateOf(1F) }
+
     Column(
         modifier = Modifier
             .padding(16.dp)
     ) {
+
         Slider(
             value = size,
             valueRange = (1F..4F),
@@ -269,13 +279,15 @@ fun SizeChangeAnimationDemo() {
             },
             modifier = Modifier.padding(bottom = 8.dp)
         )
+
         Text(
             text = stringResource(id = R.string.lines),
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
                 .animateContentSize(),
-            maxLines = size.toInt(), color = Color.Blue
+            maxLines = size.toInt(),
+            color = Color.Blue
         )
     }
 }
@@ -284,12 +296,14 @@ fun SizeChangeAnimationDemo() {
 @Composable
 fun CrossfadeAnimationDemo() {
     var isFirstScreen by remember { mutableStateOf(true) }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .height(192.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Switch(
             checked = isFirstScreen,
             onCheckedChange = {
@@ -297,7 +311,11 @@ fun CrossfadeAnimationDemo() {
             },
             modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
         )
-        Crossfade(targetState = isFirstScreen) {
+
+        Crossfade(
+            targetState = isFirstScreen,
+//            animationSpec = spring(stiffness = Spring.StiffnessVeryLow)
+        ) {
             if (it) {
                 Screen(
                     text = stringResource(id = R.string.letter_w),
@@ -334,19 +352,21 @@ fun Screen(
 @Composable
 @Preview
 fun InfiniteRepeatableDemo() {
-    val infiniteTransition = rememberInfiniteTransition()
+    val infiniteTransition = rememberInfiniteTransition(label = "RememberInfiniteTransition")
+
     val degrees by infiniteTransition.animateFloat(
         initialValue = 0F,
         targetValue = 359F,
         animationSpec = infiniteRepeatable(
             animation = keyframes {
                 durationMillis = 1500
-                0F at 0
+                0F at 500
                 359F at 1500
             },
-            repeatMode = RepeatMode.Restart
-        )
+            repeatMode = RepeatMode.Reverse
+        ), label = "Infinite Transition"
     )
+
     Box(
         modifier = Modifier
             .fillMaxWidth()

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 class TemperatureViewModel(private val repository: Repository) : ViewModel() {
 
     private val _scale: MutableStateFlow<Int> = MutableStateFlow(
-        repository.getInt("scale", R.string.celsius)
+        repository.getInt("scale", R.string.celsius) ?: 0
     )
 
     val scale: StateFlow<Int>

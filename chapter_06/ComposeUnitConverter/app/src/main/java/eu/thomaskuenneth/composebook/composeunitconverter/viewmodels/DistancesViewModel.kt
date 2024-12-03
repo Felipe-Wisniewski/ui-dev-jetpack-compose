@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class DistancesViewModel(private val repository: Repository) : ViewModel() {
 
     private val _unit: MutableStateFlow<Int> = MutableStateFlow(
-        repository.getInt("unit", R.string.meter)
+        repository.getInt("unit", R.string.meter) ?: 0
     )
 
     val unit: StateFlow<Int>

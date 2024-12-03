@@ -19,6 +19,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 val AndroidGreen = Color(0xFF3DDC84)
 val AndroidGreenDark = Color(0xFF20B261)
@@ -49,11 +50,11 @@ fun ComposeUnitConverterTheme(
     }
     MaterialTheme(
         colorScheme = colorScheme,
-//        typography = Typography(
-//            labelLarge = MaterialTheme.typography.labelLarge.copy(
-//                fontSize = 22.sp
-//            )
-//        ),
+        typography = Typography(
+            labelLarge = MaterialTheme.typography.labelLarge.copy(
+                fontSize = 22.sp
+            )
+        ),
         content = content
     )
 }

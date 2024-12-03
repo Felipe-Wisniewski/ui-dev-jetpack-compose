@@ -39,11 +39,13 @@ class FlowOfEventsDemoActivity : ComponentActivity() {
 @Composable
 @Preview
 fun FlowOfEventsDemo() {
+
     val strCelsius = stringResource(id = R.string.celsius)
     val strFahrenheit = stringResource(id = R.string.fahrenheit)
     var temperature by remember { mutableStateOf("") }
     var scale by remember { mutableStateOf(R.string.celsius) }
     var convertedTemperature by remember { mutableStateOf(Float.NaN) }
+
     val calc = {
         val temp = temperature.toFloat()
         convertedTemperature = if (scale == R.string.celsius)
@@ -51,6 +53,7 @@ fun FlowOfEventsDemo() {
         else
             (temp - 32F) / 1.8F
     }
+
     val result = remember(convertedTemperature) {
         if (convertedTemperature.isNaN())
             ""
@@ -61,7 +64,9 @@ fun FlowOfEventsDemo() {
                 else strCelsius
             }"
     }
+
     val enabled = temperature.isNotBlank()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -73,17 +78,20 @@ fun FlowOfEventsDemo() {
             modifier = Modifier.padding(bottom = 16.dp),
             callback = calc
         )
+
         TemperatureScaleButtonGroup(
             selected = scale,
             radioButtonClicked = { scale = it },
             modifier = Modifier.padding(bottom = 16.dp)
         )
+
         Button(
             onClick = calc,
             enabled = enabled
         ) {
             Text(text = stringResource(id = R.string.convert))
         }
+
         if (result.isNotEmpty()) {
             Text(
                 text = result,

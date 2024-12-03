@@ -24,10 +24,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import eu.thomaskuenneth.composebook.interopdemo.databinding.CustomBinding
 
 class ComposeActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val viewModel: InteropDemoViewModel by viewModels()
         viewModel.setSliderValue(intent.getFloatExtra(KEY, 0F))
+
         setContent {
             ViewIntegrationDemo(viewModel) {
                 val i = Intent(
@@ -45,13 +48,16 @@ class ComposeActivity : ComponentActivity() {
 @Composable
 fun ViewIntegrationDemo(viewModel: InteropDemoViewModel, onClick: () -> Unit) {
     val sliderValueState = viewModel.sliderValue.collectAsStateWithLifecycle()
+
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(title =
-            {
-                Text(text = stringResource(id = R.string.compose_activity))
-            })
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(id = R.string.compose_activity))
+                }
+            )
         }) { padding ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -66,6 +72,7 @@ fun ViewIntegrationDemo(viewModel: InteropDemoViewModel, onClick: () -> Unit) {
                 },
                 value = sliderValueState.value
             )
+
             AndroidViewBinding(
                 modifier = Modifier.fillMaxWidth(),
                 factory = CustomBinding::inflate

@@ -35,10 +35,13 @@ class ViewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val viewModel: InteropDemoViewModel by viewModels()
         viewModel.setSliderValue(intent.getFloatExtra(KEY, 0F))
+
         binding = LayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.sliderValue.collect {
@@ -46,11 +49,15 @@ class ViewActivity : AppCompatActivity() {
                 }
             }
         }
+
         binding.slider.addOnChangeListener { _, value, _ -> viewModel.setSliderValue(value) }
+
         binding.composeView.run {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
+
             setContent {
                 val sliderValue = viewModel.sliderValue.collectAsStateWithLifecycle()
+
                 sliderValue.value.let {
                     ComposeDemo(it) {
                         val i = Intent(
@@ -84,6 +91,7 @@ fun ComposeDemo(value: Float, onClick: () -> Unit) {
                 text = value.toString()
             )
         }
+
         OutlinedButton(
             onClick = onClick,
             modifier = Modifier.padding(top = 16.dp)

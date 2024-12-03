@@ -48,24 +48,31 @@ class ZxingDemoActivity : ComponentActivity() {
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         clipboardManager = getSystemService(android.content.ClipboardManager::class.java)
+
         val root = layoutInflater.inflate(R.layout.layout, null)
         barcodeView = root.findViewById(R.id.barcode_scanner)
+
         val formats = listOf(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39)
         barcodeView.barcodeView.decoderFactory = DefaultDecoderFactory(formats)
         barcodeView.initializeFromIntent(intent)
+
         val callback = object : BarcodeCallback {
             override fun barcodeResult(result: BarcodeResult) {
                 if (result.text == null || result.text == text.value) {
                     return
                 }
+
                 text.value = result.text
                     .also {
                         clipboardManager.copyToClipboard(it)
                     }
             }
         }
+
         barcodeView.decodeContinuous(callback)
+
         setContent {
             with(text.collectAsStateWithLifecycle()) {
                 ZxingDemo(
@@ -78,11 +85,13 @@ class ZxingDemoActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
+
         requestPermission.launch(Manifest.permission.CAMERA)
     }
 
     override fun onPause() {
         super.onPause()
+
         barcodeView.pause()
     }
 
@@ -101,10 +110,11 @@ fun ZxingDemo(root: View, value: String) {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.TopCenter
     ) {
-        AndroidView(modifier = Modifier.fillMaxSize(),
-            factory = {
-                root
-            })
+        AndroidView(
+            modifier = Modifier.fillMaxSize(),
+            factory = { root }
+        )
+
         if (value.isNotBlank()) {
             Text(
                 modifier = Modifier.padding(16.dp),

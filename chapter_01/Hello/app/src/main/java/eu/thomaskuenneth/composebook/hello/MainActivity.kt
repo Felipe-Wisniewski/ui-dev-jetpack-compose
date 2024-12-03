@@ -3,7 +3,11 @@ package eu.thomaskuenneth.composebook.hello
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -19,7 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.*
+import androidx.compose.ui.tooling.preview.Device
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
@@ -32,8 +40,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-@Preview(group = "my-group-1", device = Devices.AUTOMOTIVE_1024p)
-fun GreetingWrapper() {
+@Preview(
+    group = "my-group-1",
+    device = Devices.AUTOMOTIVE_1024p,
+    showBackground = true,
+    backgroundColor = 0xffff0000
+)
+fun GreetingWrapper( ) {
     Greeting("Jetpack Compose")
 }
 
@@ -47,7 +60,7 @@ fun Greeting(name: String) {
 }
 
 @Composable
-@Preview(group = "my-group-1")
+@Preview(group = "my-group-1", widthDp = 100, heightDp = 100)
 fun AltGreeting(name: String = "Jetpack Compose") {
     Text(
         text = stringResource(id = R.string.hello, name),
@@ -58,7 +71,7 @@ fun AltGreeting(name: String = "Jetpack Compose") {
 
 class HelloProvider : PreviewParameterProvider<String> {
     override val values: Sequence<String>
-        get() = listOf("PreviewParameterProvider").asSequence()
+        get() = listOf("Test","Felipe").asSequence()
 }
 
 @Composable
@@ -75,7 +88,7 @@ fun AltGreeting2(
 }
 
 @Composable
-@Preview(locale = "de-rDE")
+@Preview(locale = "de-rDE", showSystemUi = true, device = Devices.PHONE)
 fun Welcome() {
     Text(
         text = stringResource(id = R.string.welcome),

@@ -64,29 +64,30 @@ fun SimpleFlexBox(
 
 private fun simpleFlexboxMeasurePolicy(): MeasurePolicy =
     MeasurePolicy { measurables, constraints ->
+
         val placeables = measurables.map { measurable ->
             measurable.measure(constraints)
         }
-        layout(
-            constraints.maxWidth,
-            constraints.maxHeight
-        ) {
+
+        layout(constraints.maxWidth, constraints.maxHeight) {
             var yPos = 0
             var xPos = 0
             var maxY = 0
+
             placeables.forEach { placeable ->
-                if (xPos + placeable.width >
-                    constraints.maxWidth
-                ) {
+                if (xPos + placeable.width > constraints.maxWidth) {
                     xPos = 0
                     yPos += maxY
                     maxY = 0
                 }
+
                 placeable.placeRelative(
                     x = xPos,
                     y = yPos
                 )
+
                 xPos += placeable.width
+
                 if (maxY < placeable.height) {
                     maxY = placeable.height
                 }

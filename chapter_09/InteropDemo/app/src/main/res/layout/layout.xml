@@ -47,4 +47,5 @@
             app:title="@string/view_activity" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

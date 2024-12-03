@@ -22,13 +22,13 @@ sealed class ComposeUnitConverterScreen(
         const val route_distances = "distances"
     }
 
-    private object Temperature : ComposeUnitConverterScreen(
+    private data object Temperature : ComposeUnitConverterScreen(
         route_temperature,
         R.string.temperature,
         Icons.Default.Thermostat
     )
 
-    private object Distances : ComposeUnitConverterScreen(
+    private data object Distances : ComposeUnitConverterScreen(
         route_distances,
         R.string.distances,
         Icons.Default.SquareFoot
